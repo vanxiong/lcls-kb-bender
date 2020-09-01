@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="MAIN" Id="{72e1315c-963a-4f0f-b008-6c5645b2798e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	{attribute 'TcLinkTo' := '	[1].bLimHigh	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E1(EL7041)^STM Status^Status^Digital input 1;
+								[1].bLimLow		:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E1(EL7041)^STM Status^Status^Digital input 2;
+								[2].bLimHigh	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E3(EL7041)^STM Status^Status^Digital input 1;
+								[2].bLimLow		:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E3(EL7041)^STM Status^Status^Digital input 2;
+								[3].bLimHigh	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E5(EL7041)^STM Status^Status^Digital input 1;
+								[3].bLimLow		:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E5(EL7041)^STM Status^Status^Digital input 2;
+								[4].bLimHigh	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E7(EL7041)^STM Status^Status^Digital input 1;
+								[4].bLimLow		:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E7(EL7041)^STM Status^Status^Digital input 2'}
+	M			: ARRAY [1 .. 4] OF ST_AxisGroup;
+	
+	{attribute 'TcLinkTo' := '	[1]	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E4(EL3202-0010)^RTD Inputs Channel 1^Value;
+								[2]	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E4(EL3202-0010)^RTD Inputs Channel 2^Value;
+								[3]	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E8(EL3202-0010)^RTD Inputs Channel 1^Value;
+								[4]	:=	TIID^Device 1 (EtherCAT)^Term 12 (EK1100)^E8(EL3202-0010)^RTD Inputs Channel 2^Value'}
+	RTD AT %I*	: ARRAY [1 .. 4] OF INT;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*update Axis_Ref status*)
+M[1].axisRef.ReadStatus();
+M[2].axisRef.ReadStatus();
+M[3].axisRef.ReadStatus();
+M[4].axisRef.ReadStatus();
+
+(*Enable motors*)
+M[1].mcPower(Axis:=M[1].axisRef, Enable:=TRUE, Enable_Positive:=M[1].bLimHigh, Enable_Negative:=M[1].bLimLow);
+M[2].mcPower(Axis:=M[2].axisRef, Enable:=TRUE, Enable_Positive:=M[2].bLimHigh, Enable_Negative:=M[2].bLimLow);
+M[3].mcPower(Axis:=M[3].axisRef, Enable:=TRUE, Enable_Positive:=M[3].bLimHigh, Enable_Negative:=M[3].bLimLow);
+M[4].mcPower(Axis:=M[4].axisRef, Enable:=TRUE, Enable_Positive:=M[4].bLimHigh, Enable_Negative:=M[4].bLimLow);
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="1" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
